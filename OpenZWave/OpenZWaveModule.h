@@ -5,6 +5,7 @@
  */
 
 #include "OpenZWaveDriver.h"
+#include "NotificationProcessor.h"
 
 class OpenZWaveModule {
 public:
@@ -17,6 +18,7 @@ private:
 	Poco::Logger &logger;
 	const Poco::Util::AbstractConfiguration &m_config;
 	OpenZWaveDriver m_driver;
+	NotificationProcessor m_notificationProcessor;
 
 	/*
 	 * Set Options for OpenZWave from ini file

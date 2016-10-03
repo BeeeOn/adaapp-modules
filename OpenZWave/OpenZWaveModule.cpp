@@ -107,9 +107,18 @@ void OpenZWaveModule::start()
 	Log::SetLoggingClass(pocoLogger);
 
 	loadConfiguration();
+	m_notificationProcessor.setCertificatePath(loadCertificationPath());
 	Manager::Create();
+	Manager::Get()->AddWatcher(onNotification, &m_notificationProcessor);
 
 	m_driver.registerItself();
+	m_notificationProcessor.waitUntilQueried();
+
+	m_driver.registerItself();
+	if (m_notificationProcessor.getInitFailed()) {
+		logger.fatal("Driver failed", __FILE__, __LINE__);
+		stop();
+	}
 }
 
 void OpenZWaveModule::stop()
@@ -118,6 +127,7 @@ void OpenZWaveModule::stop()
 		logger.error("The driver " + m_driver.getUSBDriverPath()
 				+ "could not be found");
 
+	Manager::Get()->RemoveWatcher(onNotification, &m_notificationProcessor);
 	Manager::Destroy();
 	Options::Destroy();
 }
