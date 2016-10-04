@@ -15,6 +15,7 @@
 #include <Options.h>
 
 #include "OpenZWaveModule.h"
+#include "PocoLoggerAdapter.h"
 
 using namespace std;
 using namespace OpenZWave;
@@ -99,6 +100,10 @@ std::string OpenZWaveModule::loadCertificationPath()
 
 void OpenZWaveModule::start()
 {
+	// pocoLogger is deleted by OpenZWave library
+	PocoLoggerAdapter *pocoLogger = new PocoLoggerAdapter();
+	Log::SetLoggingClass(pocoLogger);
+
 	loadConfiguration();
 	Manager::Create();
 }
