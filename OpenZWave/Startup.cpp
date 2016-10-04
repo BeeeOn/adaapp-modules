@@ -8,6 +8,7 @@
 #define SYSTEM_LOGGING_FILE  (std::string)"/etc/beeeon/openzwave/logging.ini"
 
 #include "Startup.h"
+#include "OpenZWaveModule.h"
 
 void Startup::loadAllConfiguration()
 {
@@ -52,6 +53,9 @@ void Startup::initialize(Application &app)
 
 int Startup::main(const std::vector <std::string> &args)
 {
+	OpenZWaveModule module(config());
+	module.start();
+
 	waitForTerminationRequest();
 
 	return EXIT_OK;

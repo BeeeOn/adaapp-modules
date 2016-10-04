@@ -9,6 +9,7 @@ add_definitions(-std=c++11)
 
 set (SOURCE
 	Main.cpp
+	OpenZWaveModule.cpp
 	Startup.cpp
 	)
 
