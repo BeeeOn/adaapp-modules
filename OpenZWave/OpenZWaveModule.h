@@ -4,6 +4,8 @@
  * @date September, 2016
  */
 
+#include "OpenZWaveDriver.h"
+
 class OpenZWaveModule {
 public:
 	OpenZWaveModule(const Poco::Util::AbstractConfiguration &config);
@@ -14,6 +16,7 @@ public:
 private:
 	Poco::Logger &logger;
 	const Poco::Util::AbstractConfiguration &m_config;
+	OpenZWaveDriver m_driver;
 
 	/*
 	 * Set Options for OpenZWave from ini file

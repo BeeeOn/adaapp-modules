@@ -57,6 +57,7 @@ int Startup::main(const std::vector <std::string> &args)
 	module.start();
 
 	waitForTerminationRequest();
+	module.stop();
 
 	return EXIT_OK;
 }

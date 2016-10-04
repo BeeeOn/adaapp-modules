@@ -21,6 +21,7 @@ using namespace std;
 using namespace OpenZWave;
 using namespace Poco;
 
+#define DEFAULT_DONGLE_PATH           "/dev/ttyACM0"
 #define DEFAULT_DRIVER_MAX_ATTEMPTS   5
 #define DEFAULT_POLL_INTERVAL         300
 #define DEFAULT_CONFIG_PATH           (string)"/etc/openzwave"
@@ -31,7 +32,8 @@ using namespace Poco;
 
 OpenZWaveModule::OpenZWaveModule(const Util::AbstractConfiguration &config):
 	logger(Logger::get("OpenZWaveModule")),
-	m_config(config)
+	m_config(config),
+	m_driver(m_config.getString("openzwave.dongle_path", DEFAULT_DONGLE_PATH))
 {
 }
 
@@ -106,10 +108,16 @@ void OpenZWaveModule::start()
 
 	loadConfiguration();
 	Manager::Create();
+
+	m_driver.registerItself();
 }
 
 void OpenZWaveModule::stop()
 {
+	if (!m_driver.unregisterItself())
+		logger.error("The driver " + m_driver.getUSBDriverPath()
+				+ "could not be found");
+
 	Manager::Destroy();
 	Options::Destroy();
 }
