@@ -13,6 +13,7 @@ set (SOURCE
 	OpenZWaveModule.cpp
 	PocoLoggerAdapter.cpp
 	Startup.cpp
+	ZWaveMessage.cpp
 	)
 
 include_directories (
