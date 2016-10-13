@@ -11,6 +11,7 @@ set (SOURCE
 	BeeeOnMessage.cpp
 	GenericZWaveMessageFactory.cpp
 	Main.cpp
+	MosquittoClient.cpp
 	NotificationProcessor.cpp
 	OpenZWaveModule.cpp
 	PocoLoggerAdapter.cpp

@@ -14,6 +14,7 @@
 #include <Manager.h>
 #include <Options.h>
 
+#include "MosquittoClient.h"
 #include "OpenZWaveModule.h"
 #include "PocoLoggerAdapter.h"
 
@@ -126,6 +127,10 @@ void OpenZWaveModule::start()
 
 	m_notificationProcessor.setGenericMessageFactory(m_factory);
 
+	m_mqttClient.setFactory(m_factory);
+	m_mqttClient.start();
+	m_notificationProcessor.setMqttClient(&m_mqttClient);
+
 	loadConfiguration();
 	m_notificationProcessor.setCertificatePath(loadCertificationPath());
 	m_notificationProcessor.setAdaAppConfigFileName(loadAdaAppConfigFileName());
@@ -144,6 +149,8 @@ void OpenZWaveModule::start()
 
 void OpenZWaveModule::stop()
 {
+	m_mqttClient.stop();
+
 	if (!m_driver.unregisterItself())
 		logger.error("The driver " + m_driver.getUSBDriverPath()
 				+ "could not be found");

@@ -15,9 +15,10 @@
 
 #include <Notification.h>
 
-#include "ZWaveMessage.h"
 #include "BeeeOnMessage.h"
 #include "GenericZWaveMessageFactory.h"
+#include "MosquittoClient.h"
+#include "ZWaveMessage.h"
 
 struct NodeInfo {
     bool m_polled;
@@ -34,6 +35,11 @@ typedef std::map<uint8_t, NodeInfo> nodeInfoMap;
 class NotificationProcessor {
 public:
 	NotificationProcessor();
+
+	void setMqttClient(MosquittoClient *client)
+	{
+		m_mqttClient = client;
+	}
 
 	/*
 	 * Set factory
@@ -152,6 +158,7 @@ private:
 	bool m_initFailed;
 	Poco::Logger &logger;
 	GenericZWaveMessageFactory *m_factory;
+	MosquittoClient *m_mqttClient;
 };
 
 /*

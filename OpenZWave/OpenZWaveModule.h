@@ -25,6 +25,7 @@ private:
 	OpenZWaveDriver m_driver;
 	NotificationProcessor m_notificationProcessor;
 	GenericZWaveMessageFactory *m_factory;
+	MosquittoClient m_mqttClient;
 
 	/*
 	 * Set Options for OpenZWave from ini file

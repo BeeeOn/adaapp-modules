@@ -128,6 +128,8 @@ void NotificationProcessor::sendBeeeOnMessage(const uint8_t &nodeId, ZWaveMessag
 
 	message->extractValues(beeeOnSensorValue, zwaveValues);
 	beeeOnMessage.setValues(beeeOnSensorValue);
+
+	m_mqttClient->sendBeeeOnMessage(beeeOnMessage);
 }
 
 void NotificationProcessor::valueRemoved(const Notification *notification)
@@ -209,6 +211,8 @@ void NotificationProcessor::onNotification(const Notification *notification)
 	}
 	case Notification::Type_DriverReady: {
 		m_homeId = notification->GetHomeId();
+		m_mqttClient->setHomeID(m_homeId);
+
 		Manager::Get()->WriteConfig(m_homeId);
 		break;
 	}
