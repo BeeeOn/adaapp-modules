@@ -8,6 +8,7 @@ set (CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -g -pedantic -Wall -Wno-unknown-pragma
 add_definitions(-std=c++11)
 
 set (SOURCE
+	BeeeOnMessage.cpp
 	Main.cpp
 	NotificationProcessor.cpp
 	OpenZWaveModule.cpp
@@ -26,6 +27,8 @@ include_directories(${CMAKE_SOURCE_DIR})
 
 find_library (POCO_FOUNDATION PocoFoundation)
 find_library (POCO_UTIL PocoUtil)
+find_library (POCO_JSON PocoJSON)
+find_library (MOSQUITTO_CPP mosquittopp)
 find_library (OPENZWAVE openzwave
 		PATHS
 			/usr/lib
@@ -41,4 +44,6 @@ target_link_libraries (
 	${POCO_FOUNDATION}
 	${POCO_UTIL}
 	${OPENZWAVE}
+	${POCO_JSON}
+	${MOSQUITTO_CPP}
 	)
