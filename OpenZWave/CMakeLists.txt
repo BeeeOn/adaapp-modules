@@ -11,11 +11,13 @@ set (SOURCE
 	BeeeOnMessage.cpp
 	GenericZWaveMessageFactory.cpp
 	Main.cpp
+	Manufacturers/AeotecZWaveMessageFactory.cpp
 	Manufacturers/FibaroZWaveMessageFactory.cpp
 	MosquittoClient.cpp
 	NotificationProcessor.cpp
 	OpenZWaveModule.cpp
 	PocoLoggerAdapter.cpp
+	Products/AeotecZW100ZWaveMessage.cpp
 	Products/FibaroFGK107ZWaveMessage.cpp
 	Startup.cpp
 	ZWaveMessage.cpp

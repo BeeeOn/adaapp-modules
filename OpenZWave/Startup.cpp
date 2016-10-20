@@ -13,6 +13,7 @@
 #include "Startup.h"
 #include "OpenZWaveModule.h"
 
+#include "Manufacturers/AeotecZWaveMessageFactory.h"
 #include "Manufacturers/FibaroZWaveMessageFactory.h"
 
 void Startup::loadAllConfiguration()
@@ -64,6 +65,9 @@ int Startup::main(const std::vector <std::string> &args)
 
 	GenericZWaveMessageFactory factory;
 	module.setFactory(&factory);
+
+	AeotecZWaveMessageFactory aeotecFactory;
+	factory.registerManufacturer(AEOTEC_MANUFACTURER, &aeotecFactory);
 
 	FibaroZWaveMessageFactory fibaroFactory;
 	factory.registerManufacturer(FIBARO_MANUFACTURER, &fibaroFactory);
