@@ -14,6 +14,7 @@
 #include "OpenZWaveModule.h"
 
 #include "Manufacturers/AeotecZWaveMessageFactory.h"
+#include "Manufacturers/DLinkZWaveMessageFactory.h"
 #include "Manufacturers/FibaroZWaveMessageFactory.h"
 
 void Startup::loadAllConfiguration()
@@ -68,6 +69,9 @@ int Startup::main(const std::vector <std::string> &args)
 
 	AeotecZWaveMessageFactory aeotecFactory;
 	factory.registerManufacturer(AEOTEC_MANUFACTURER, &aeotecFactory);
+
+	DLinkZWaveMessageFactory dlinkFactory;
+	factory.registerManufacturer(DLINK_MANUFACTURER, &dlinkFactory);
 
 	FibaroZWaveMessageFactory fibaroFactory;
 	factory.registerManufacturer(FIBARO_MANUFACTURER, &fibaroFactory);

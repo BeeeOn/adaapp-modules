@@ -1,4 +1,5 @@
-/**
+/**eotecZWaveMessageFactory aeotecFactory;
+    m_factory.registerManufacturer(AEOTEC, &aeotecFactory);
  * @file OpenZWaveModule.cpp
  * @Author BeeeOn team - Peter Tisovčík <xtisov00@stud.fit.vutbr.cz>
  * @date September, 2016

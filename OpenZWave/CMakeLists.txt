@@ -12,12 +12,14 @@ set (SOURCE
 	GenericZWaveMessageFactory.cpp
 	Main.cpp
 	Manufacturers/AeotecZWaveMessageFactory.cpp
+	Manufacturers/DLinkZWaveMessageFactory.cpp
 	Manufacturers/FibaroZWaveMessageFactory.cpp
 	MosquittoClient.cpp
 	NotificationProcessor.cpp
 	OpenZWaveModule.cpp
 	PocoLoggerAdapter.cpp
 	Products/AeotecZW100ZWaveMessage.cpp
+	Products/DLinkDchZ120ZWaveMessage.cpp
 	Products/FibaroFGK107ZWaveMessage.cpp
 	Startup.cpp
 	ZWaveMessage.cpp
