@@ -9,6 +9,7 @@ add_definitions(-std=c++11)
 
 set (SOURCE
 	BeeeOnMessage.cpp
+	GenericZWaveMessageFactory.cpp
 	Main.cpp
 	NotificationProcessor.cpp
 	OpenZWaveModule.cpp
