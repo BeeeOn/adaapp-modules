@@ -10,6 +10,7 @@
 
 #include <Poco/Exception.h>
 
+#include "Manufacturers/FibaroZWaveMessageFactory.h"
 #include "ZWaveMessageFactory.h"
 
 class GenericZWaveMessageFactory : public ZWaveMessageFactory {

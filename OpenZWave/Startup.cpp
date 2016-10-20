@@ -13,6 +13,8 @@
 #include "Startup.h"
 #include "OpenZWaveModule.h"
 
+#include "Manufacturers/FibaroZWaveMessageFactory.h"
+
 void Startup::loadAllConfiguration()
 {
 	findAndLoadConfig();
@@ -62,6 +64,9 @@ int Startup::main(const std::vector <std::string> &args)
 
 	GenericZWaveMessageFactory factory;
 	module.setFactory(&factory);
+
+	FibaroZWaveMessageFactory fibaroFactory;
+	factory.registerManufacturer(FIBARO_MANUFACTURER, &fibaroFactory);
 
 	module.start();
 
