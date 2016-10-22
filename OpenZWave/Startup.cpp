@@ -16,6 +16,7 @@
 #include "Manufacturers/AeotecZWaveMessageFactory.h"
 #include "Manufacturers/DLinkZWaveMessageFactory.h"
 #include "Manufacturers/FibaroZWaveMessageFactory.h"
+#include "Manufacturers/PoppZWaveMessageFactory.h"
 
 void Startup::loadAllConfiguration()
 {
@@ -75,6 +76,9 @@ int Startup::main(const std::vector <std::string> &args)
 
 	FibaroZWaveMessageFactory fibaroFactory;
 	factory.registerManufacturer(FIBARO_MANUFACTURER, &fibaroFactory);
+
+	PoppZWaveMessageFactory poppFactory;
+	factory.registerManufacturer(POPP_MANUFACTURER, &poppFactory);
 
 	module.start();
 

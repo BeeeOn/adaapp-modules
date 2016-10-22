@@ -14,6 +14,7 @@ set (SOURCE
 	Manufacturers/AeotecZWaveMessageFactory.cpp
 	Manufacturers/DLinkZWaveMessageFactory.cpp
 	Manufacturers/FibaroZWaveMessageFactory.cpp
+	Manufacturers/PoppZWaveMessageFactory.cpp
 	MosquittoClient.cpp
 	NotificationProcessor.cpp
 	OpenZWaveModule.cpp
@@ -21,6 +22,7 @@ set (SOURCE
 	Products/AeotecZW100ZWaveMessage.cpp
 	Products/DLinkDchZ120ZWaveMessage.cpp
 	Products/FibaroFGK107ZWaveMessage.cpp
+	Products/Popp123601ZWaveMessage.cpp
 	Startup.cpp
 	ZWaveMessage.cpp
 	)
