@@ -15,6 +15,7 @@ set (SOURCE
 	Manufacturers/DLinkZWaveMessageFactory.cpp
 	Manufacturers/FibaroZWaveMessageFactory.cpp
 	Manufacturers/PoppZWaveMessageFactory.cpp
+	Manufacturers/PhilioZWaveMessageFactory.cpp
 	MosquittoClient.cpp
 	NotificationProcessor.cpp
 	OpenZWaveModule.cpp
@@ -23,6 +24,7 @@ set (SOURCE
 	Products/DLinkDchZ120ZWaveMessage.cpp
 	Products/FibaroFGK107ZWaveMessage.cpp
 	Products/Popp123601ZWaveMessage.cpp
+	Products/PhilioPST021CZWaveMessage.cpp
 	Startup.cpp
 	ZWaveMessage.cpp
 	)
