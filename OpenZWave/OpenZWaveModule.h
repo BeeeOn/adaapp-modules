@@ -14,11 +14,17 @@ public:
 	void start();
 	void stop();
 
+	void setFactory(GenericZWaveMessageFactory *factory)
+	{
+		m_factory = factory;
+	}
+
 private:
 	Poco::Logger &logger;
 	const Poco::Util::AbstractConfiguration &m_config;
 	OpenZWaveDriver m_driver;
 	NotificationProcessor m_notificationProcessor;
+	GenericZWaveMessageFactory *m_factory;
 
 	/*
 	 * Set Options for OpenZWave from ini file

@@ -15,6 +15,10 @@
 
 #include <Notification.h>
 
+#include "ZWaveMessage.h"
+#include "BeeeOnMessage.h"
+#include "GenericZWaveMessageFactory.h"
+
 struct NodeInfo {
     bool m_polled;
     std::list<OpenZWave::ValueID> m_values;
@@ -30,6 +34,15 @@ typedef std::map<uint8_t, NodeInfo> nodeInfoMap;
 class NotificationProcessor {
 public:
 	NotificationProcessor();
+
+	/*
+	 * Set factory
+	 * @param *factory
+	 */
+	void setGenericMessageFactory(GenericZWaveMessageFactory *factory)
+	{
+		m_factory = factory;
+	}
 
 	/*
 	 * Find data using notification
@@ -68,6 +81,15 @@ public:
 	}
 
 	void waitUntilQueried();
+
+	/*
+	 * Load and send data to adapter from message
+	 * @param &nodeId unique device identifier in ZWave network
+	 * @param *message It contains specific method for set and extract data
+	 * @param &value Z-Wave values
+	 */
+	void sendBeeeOnMessage(const uint8_t &nodeId, ZWaveMessage *message,
+		const std::list<OpenZWave::ValueID> &value);
 
 	/*
 	 * It handles notification from Z-Wave network.
@@ -129,6 +151,7 @@ private:
 	uint32_t m_homeId;
 	bool m_initFailed;
 	Poco::Logger &logger;
+	GenericZWaveMessageFactory *m_factory;
 };
 
 /*

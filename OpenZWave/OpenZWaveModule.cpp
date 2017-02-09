@@ -124,6 +124,8 @@ void OpenZWaveModule::start()
 	PocoLoggerAdapter *pocoLogger = new PocoLoggerAdapter();
 	Log::SetLoggingClass(pocoLogger);
 
+	m_notificationProcessor.setGenericMessageFactory(m_factory);
+
 	loadConfiguration();
 	m_notificationProcessor.setCertificatePath(loadCertificationPath());
 	m_notificationProcessor.setAdaAppConfigFileName(loadAdaAppConfigFileName());

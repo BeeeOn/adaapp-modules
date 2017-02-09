@@ -6,7 +6,10 @@
 
 #include <list>
 #include <map>
+#include <vector>
 
+#include <Poco/Exception.h>
+#include <Poco/NumberParser.h>
 #include <Poco/ScopedLock.h>
 
 #include <Manager.h>
@@ -14,6 +17,7 @@
 #include "NotificationProcessor.h"
 
 using namespace OpenZWave;
+using Poco::NumberParser;
 
 typedef map<uint8_t, NodeInfo> nodeInfoMap;
 
@@ -60,9 +64,70 @@ void NotificationProcessor::valueAdded(const Notification *notification)
 void NotificationProcessor::valueChanged(const Notification *notification)
 {
 	nodeInfoMap::iterator it = m_nodesMap.find(notification->GetNodeId());
+	ZWaveMessage *message;
+	uint32_t manufacturer;
+	uint32_t product;
+	uint8_t nodeId;
 
 	if (it == m_nodesMap.end())
 		return;
+
+	nodeId = notification->GetNodeId();
+
+	try {
+		manufacturer = NumberParser::parseHex(Manager::Get()->GetNodeManufacturerId(
+			m_homeId, nodeId));
+		product = NumberParser::parseHex(Manager::Get()->GetNodeProductId(
+			m_homeId, nodeId));
+	}
+	catch (Poco::Exception &ex) {
+		logger.error("Failed to parse value");
+		logger.log(ex, __FILE__, __LINE__);
+		return;
+	}
+
+	try {
+		message = m_factory->create(manufacturer, product);
+	}
+	catch (Poco::Exception &ex) {
+		logger.error("manufacturer: " + std::to_string(manufacturer) + " product: " + std::to_string(product));
+		logger.log(ex, __FILE__, __LINE__);
+		return;
+	}
+
+	message->setCertificatePath(m_certificatePath);
+	message->setAdaAppConfigFileName(m_adaappFileName);
+	sendBeeeOnMessage(nodeId, message, it->second.m_values);
+	delete message;
+}
+
+void NotificationProcessor::sendBeeeOnMessage(const uint8_t &nodeId, ZWaveMessage *message,
+	const list<OpenZWave::ValueID> &values)
+{
+	BeeeOnMessage beeeOnMessage;
+	vector<ZWaveSensorValue> zwaveValues;
+	vector<BeeeOnSensorValue> beeeOnSensorValue;
+
+	string value;
+
+	for (auto &item : values) {
+		Manager::Get()->GetValueAsString(item, &value);
+
+		zwaveValues.push_back({
+			item.GetCommandClassId(),
+			item.GetIndex(),
+			item,
+			value,
+			Manager::Get()->GetValueUnits(item)});
+	}
+
+	beeeOnMessage.setState("data");
+	beeeOnMessage.setDeviceID(message->getDeviceID());
+	beeeOnMessage.setEUID(message->generateEUID(m_homeId, nodeId));
+	message->generateEUID(m_homeId, nodeId);
+
+	message->extractValues(beeeOnSensorValue, zwaveValues);
+	beeeOnMessage.setValues(beeeOnSensorValue);
 }
 
 void NotificationProcessor::valueRemoved(const Notification *notification)

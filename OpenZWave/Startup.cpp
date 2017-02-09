@@ -7,6 +7,9 @@
 #define SYSTEM_CONFIG_FILE   (std::string)"/etc/beeeon/openzwave/openzwave.ini"
 #define SYSTEM_LOGGING_FILE  (std::string)"/etc/beeeon/openzwave/logging.ini"
 
+#include <time.h>
+
+#include "GenericZWaveMessageFactory.h"
 #include "Startup.h"
 #include "OpenZWaveModule.h"
 
@@ -56,6 +59,10 @@ int Startup::main(const std::vector <std::string> &args)
 	srand(time(NULL));
 
 	OpenZWaveModule module(config());
+
+	GenericZWaveMessageFactory factory;
+	module.setFactory(&factory);
+
 	module.start();
 
 	waitForTerminationRequest();
