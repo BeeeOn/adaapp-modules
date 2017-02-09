@@ -29,6 +29,7 @@ include_directories(${CMAKE_SOURCE_DIR})
 find_library (POCO_FOUNDATION PocoFoundation)
 find_library (POCO_UTIL PocoUtil)
 find_library (POCO_JSON PocoJSON)
+find_library (POCO_CRYPTO PocoCrypto)
 find_library (MOSQUITTO_CPP mosquittopp)
 find_library (OPENZWAVE openzwave
 		PATHS
@@ -47,4 +48,5 @@ target_link_libraries (
 	${OPENZWAVE}
 	${POCO_JSON}
 	${MOSQUITTO_CPP}
+	${POCO_CRYPTO}
 	)

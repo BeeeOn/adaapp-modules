@@ -53,6 +53,8 @@ void Startup::initialize(Application &app)
 
 int Startup::main(const std::vector <std::string> &args)
 {
+	srand(time(NULL));
+
 	OpenZWaveModule module(config());
 	module.start();
 

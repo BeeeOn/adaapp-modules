@@ -51,6 +51,14 @@ public:
 	}
 
 	/*
+	 * AdaApp file name configuration
+	 */
+	void setAdaAppConfigFileName(std::string fileName)
+	{
+		m_adaappFileName = fileName;
+	}
+
+	/*
 	 * Certificate path to determine gateway ID for generate EUID
 	 * @return Certificate path
 	 */
@@ -115,6 +123,7 @@ private:
 	Poco::Mutex m_initMutex;
 	Poco::Condition m_initCondition;
 	std::string m_certificatePath;
+	std::string m_adaappFileName;
 	static std::map<uint8_t, NodeInfo> m_nodesMap;
 
 	uint32_t m_homeId;

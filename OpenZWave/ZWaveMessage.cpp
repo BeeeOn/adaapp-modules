@@ -4,10 +4,16 @@
  * @date September, 2016
  */
 
+#include <fstream>
+#include <iostream>
 #include <list>
 
+#include <Poco/AutoPtr.h>
+#include <Poco/Crypto/X509Certificate.h>
 #include <Poco/Exception.h>
 #include <Poco/NumberParser.h>
+#include <Poco/RegularExpression.h>
+#include <Poco/Util/IniFileConfiguration.h>
 
 #include <Manager.h>
 
@@ -15,6 +21,7 @@
 #include "NotificationProcessor.h"
 
 using namespace std;
+using Poco::Util::IniFileConfiguration;
 
 #define SENSOR_INDEX_BATTERY             0
 #define SENSOR_INDEX_HUMINIDITY          5
@@ -23,9 +30,83 @@ using namespace std;
 #define SENSOR_INDEX_TEMPERATURE         1
 #define SENSOR_INDEX_ULTRAVIOLET         27
 
+#define GATEWAY_ID_BITE_SIZE             16
+#define GATEWAY_MAX_NUMBER_ID            65535
+#define ZWAVE_PREFIX                     0xa8
+#define DEFAULT_GATEWAY_ID               0
+
 ZWaveMessage::ZWaveMessage():
 	logger(Poco::Logger::get("ZWaveMessage"))
 {                               
+}
+
+uint16_t ZWaveMessage::loadGatewayIDFromConfigFile()
+{
+	uint16_t gatewayID = 0;
+
+	try {
+		Poco::AutoPtr<IniFileConfiguration> config;
+
+		config = new IniFileConfiguration(m_configFileName);
+		string gatewayIDFromFile = config->getString("adapter.id",
+			DEFAULT_GATEWAY_ID);
+
+		gatewayID = Poco::NumberParser::parseUnsigned64(gatewayIDFromFile);
+	}
+	catch (Poco::Exception &ex) {
+		logger.warning("use default configuration for gateway ID");
+		logger.log(ex, __FILE__, __LINE__);
+	}
+
+	return gatewayID;
+}
+
+uint16_t ZWaveMessage::extractGatewayID()
+{
+	filebuf fileBuffer;
+	uint16_t gatewayID = 0;
+	string gatewayIDstring = "";
+
+	if (fileBuffer.open(m_certificatePath, std::ios::in)) {
+		istream is(&fileBuffer);
+
+		Poco::Crypto::X509Certificate certificate(is);
+		string gatewayAID = certificate.commonName();
+
+		if (gatewayAID == "adapter") {
+			gatewayID = loadGatewayIDFromConfigFile();
+		}
+		else {
+			Poco::RegularExpression re("[0-9]+");
+			if (re.extract(gatewayAID, gatewayIDstring) != 1)
+				gatewayID = loadGatewayIDFromConfigFile();
+			else
+				gatewayID = Poco::NumberParser::parseUnsigned64(gatewayIDstring)
+								& GATEWAY_MAX_NUMBER_ID;
+		}
+	}
+	else {
+		gatewayID = loadGatewayIDFromConfigFile();
+	}
+
+	return gatewayID;
+}
+
+uint64_t ZWaveMessage::generateEUID(const uint32_t &homeId,
+	const uint8_t &nodeId)
+{
+	uint64_t euid = 0;
+	uint64_t homeId64 = homeId;
+	uint64_t gatewayId64 = extractGatewayID();
+
+	// | 8b | 16b | 32b | 8b |
+	// prefix, gatewayID, homeId, nodeId
+	euid = uint64_t(ZWAVE_PREFIX) << 56;
+	euid |= gatewayId64 << 40;
+	euid |= homeId64 << 8;
+	euid |= nodeId;
+
+	return euid;
 }
 
 bool ZWaveMessage::asBool(const string &value)

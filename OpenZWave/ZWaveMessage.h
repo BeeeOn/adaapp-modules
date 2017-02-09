@@ -50,6 +50,18 @@ class ZWaveMessage {
 public:
 	ZWaveMessage();
 
+	void setAdaAppConfigFileName(std::string &fileName)
+	{
+		m_configFileName = fileName;
+	}
+
+	void setCertificatePath(std::string &path)
+	{
+		m_certificatePath = path;
+	}
+
+	uint16_t loadGatewayIDFromConfigFile();
+
 	/*
 	 * Extract data from ZWaveSensorValue struct and parse to BeeeOnSensorValue.
 	 * It convert from command class and index to module id.
@@ -83,11 +95,12 @@ public:
 	 * @param &nodeId unique identifier Zwave device
 	 * @return 64bit euid
 	 */
-	uint64_t getEUID(const uint32_t &homeId, const uint8_t &nodeId)
-	{
-		//TODO Think of a better generate euid
-		return ((int64(homeId) << 8) | unsigned(nodeId));
-	}
+	uint64_t generateEUID(const uint32_t &homeId, const uint8_t &nodeId);
+
+	/*
+	 * Extract ID from SSL certificate
+	 */
+	uint16_t extractGatewayID();
 
 	virtual ~ZWaveMessage()
 	{
@@ -95,6 +108,8 @@ public:
 
 protected:
 	Poco::Logger &logger;
+	std::string m_certificatePath;
+	std::string m_configFileName;
 
 	bool asBool(const std::string &value);
 

@@ -29,4 +29,9 @@ private:
 	 * Load Certification path from ini files
 	 */
 	std::string loadCertificationPath();
+
+	/*
+	 * Load AdaApp config file name from ini file
+	 */
+	std::string loadAdaAppConfigFileName();
 };

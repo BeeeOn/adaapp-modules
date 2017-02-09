@@ -29,6 +29,7 @@ using namespace Poco;
 #define DEFAULT_LOGGING               true
 #define DEFAULT_CONFIGURATION_FILE    true
 #define DEFAULT_CETFICATION_PATH      (string)"/etc/openvpn/client.crt"
+#define DEFAULT_CONFIG_FILE_NAME      (string)"/etc/beeeon/AdaApp.ini"
 
 OpenZWaveModule::OpenZWaveModule(const Util::AbstractConfiguration &config):
 	logger(Logger::get("OpenZWaveModule")),
@@ -84,6 +85,23 @@ void OpenZWaveModule::loadConfiguration()
 	Options::Get()->Lock();
 }
 
+std::string OpenZWaveModule::loadAdaAppConfigFileName()
+{
+	string configFileName = "";
+
+	try {
+		// AdaApp config file name from ini file
+		configFileName = m_config.getString("openzwave.adaapp_config_file_name",
+			DEFAULT_CONFIG_FILE_NAME);
+	}
+	catch (Exception &ex) {
+		logger.warning("use default configuration AdaApp config file name");
+		logger.log(ex, __FILE__, __LINE__);
+	}
+
+	return configFileName;
+}
+
 std::string OpenZWaveModule::loadCertificationPath()
 {
 	string certificatePath = "";
@@ -108,6 +126,7 @@ void OpenZWaveModule::start()
 
 	loadConfiguration();
 	m_notificationProcessor.setCertificatePath(loadCertificationPath());
+	m_notificationProcessor.setAdaAppConfigFileName(loadAdaAppConfigFileName());
 	Manager::Create();
 	Manager::Get()->AddWatcher(onNotification, &m_notificationProcessor);
 
