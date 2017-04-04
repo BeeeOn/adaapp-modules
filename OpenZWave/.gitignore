@@ -1,0 +1,6 @@
+build_x86
+build_arm7a
+beeeon-openzwave
+OZW_Log.txt
+zwcfg_*.xml
+zwscene.xml

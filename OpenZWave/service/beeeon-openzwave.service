@@ -1,0 +1,14 @@
+[Unit]
+Description=BeeeOn OpenZWave Application
+
+[Service]
+TimeoutStartSec=30
+TimeoutStopSec=20
+Nice=15
+WorkingDirectory=/usr/bin/
+ExecStart=/usr/bin/beeeon-openzwave
+RestartSec=5
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
