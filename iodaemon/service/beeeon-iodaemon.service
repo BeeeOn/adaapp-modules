@@ -1,0 +1,9 @@
+[Unit]
+Description=HW controlling service for BeeeOn gateway
+
+[Service]
+ExecStart=/usr/bin/iodaemon
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

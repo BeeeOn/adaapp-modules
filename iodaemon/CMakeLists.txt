@@ -55,3 +55,8 @@ install (
 	DIRECTORY etc/
 	DESTINATION etc/beeeon/
 )
+
+install (
+	FILES systemd/beeeon-iodaemon.service
+	DESTINATION lib/systemd/system
+)
